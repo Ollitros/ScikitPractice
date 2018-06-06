@@ -10,9 +10,12 @@ def mnist_model():
     x, y = utils.dowload_mnist_from_db()
 
     # Missing data (Just for example)
-    imr = preprocessing.Imputer(missing_values='NaN')
-    imr.fit(x)
-    x = imr.transform(x)
+    # imr = preprocessing.Imputer(missing_values='NaN')
+    # imr.fit(x)
+    # x = imr.transform(x)
+
+    stand = preprocessing.StandardScaler()
+    x = stand.fit_transform(x)
 
     x_train, x_test, y_train, y_test = model_selection.train_test_split(x, y, test_size=0.3)
 
@@ -43,7 +46,11 @@ def show_errors_mnist(x_test, y_test, prediction):
 
 
 def iris_model():
-    x, y, names = utils.dowload_iris_from_db(encode=True)
+    x, y, names = utils.dowload_iris_from_db(encode=False)
+
+    # Encoding label data (You can don`t do this by changing encode param above)
+    le = preprocessing.LabelEncoder()
+    y = le.fit_transform(y)
 
     x_train, x_test, y_train, y_test = model_selection.train_test_split(x, y, test_size=0.3)
 
@@ -72,5 +79,5 @@ def show_errors_iris(x_test, y_test, prediction):
 
 
 if __name__ == '__main__':
-    iris_model()
+    mnist_model()
 
